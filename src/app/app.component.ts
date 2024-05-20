@@ -28,7 +28,6 @@ export class AppComponent {
           let subDistrict = '';
           let district = '';
           let province = '';
-          let provinces = '';
           let zipCode = '';
           let isProvinceNext = false;
           let issubDistrictNext = false;
@@ -47,12 +46,16 @@ export class AppComponent {
   
             if (isProvinceNext) {
               province = part;
-              subDistrict = part;
-              district = part;
               isProvinceNext = false;
+            }
+            if (issubDistrictNext) {
+              subDistrict = part;
               issubDistrictNext = false;
-              isDistrictNext = false;
             } 
+            if (isDistrictNext) {
+              district = part;
+              isDistrictNext = false;
+            }  
             else if (part.startsWith('จ.')) {
               province = part.substring(2);
             }
@@ -77,10 +80,6 @@ export class AppComponent {
             }
           });
 
-          if (!province) {
-            province = provinces;
-          }
-          console.log(provinces);
 
           return {
             name: name.trim(),
@@ -88,7 +87,6 @@ export class AppComponent {
             subDistrict: subDistrict.trim(),
             district: district.trim(),
             province: province.trim(),
-            provinces: provinces.trim(),
             zipCode: zipCode.trim(),
           };
         }
