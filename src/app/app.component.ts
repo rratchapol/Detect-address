@@ -36,6 +36,8 @@ export class AppComponent {
           // ตรวจสอบแต่ละส่วนและจัดหมวดหมู่
           parts.forEach(part => {
             const [prefix, value] = part.trim().split(' ', 2);
+            const phoneRegex = /^0\d{9}$/;
+//8
 
             if (/^\d{10}$/.test(part)) {
               phone = part;
