@@ -29,7 +29,11 @@ export class AppComponent {
     let province = '';
     let zipCode = '';
     let rawAddress = address;
-    const nameMatch = address.match(/^\d+\s+(.+?)\s*\(/);                                     //ค้นหาตัวเลขที่อยู่ด้านหน้า และจากนั้นค้นหาข้อความที่อยู่ระหว่างวงเล็บ เช่น  31 P'Boss (
+
+    let nameMatch = address.match(/^\d+\s+(.+?)\s*\(/);                                         //ค้นหาตัวเลขที่อยู่ด้านหน้า และจากนั้นค้นหาข้อความที่อยู่ระหว่างวงเล็บ เช่น  31 P'Boss (
+    if (!nameMatch) {
+      nameMatch = address.match(/^(.*?)\s*\(/);                                                // ถ้าไม่ตรง จับด้วย ที่ไม่มีตัวเลขนำหน้า ID
+    }
     const phoneMatch = address.match(/(?:โทร|เบอร์โทร|โทร.)?\s*(\d{3}[-]?\d{3}[-]?\d{4})/);    //ค้นหาหมายเลขโทรศัพท์
     const postalCodeMatch = address.match(/\b\d{5}\b/);                                      //ค้นหารหัสไปรษณีย์
     const provinceMatch = address.match(/(?:จ\.|จังหวัด)\s*(\S+)/);                           //ค้นหาจังหวัด
@@ -57,7 +61,7 @@ export class AppComponent {
     }
     if (provinceMatch) {
       province = provinceMatch[1].trim();    //ลบช่องว่างด้านหน้าและด้านหลังข้อความ
-      rawAddress = rawAddress.replace(provinceMatch[0], '');  
+      rawAddress = rawAddress.replace(provinceMatch[0], '');
     }
     if (districtMatch) {
       district = districtMatch[1].trim();
@@ -68,7 +72,7 @@ export class AppComponent {
       rawAddress = rawAddress.replace(subDistrictMatch[0], '');
     }
     if (districtsMatch) {
-      district = districtsMatch[1].trim();  
+      district = districtsMatch[1].trim();
       rawAddress = rawAddress.replace(districtsMatch[0], '');
     }
     if (subDistrictsMatch) {
