@@ -1,0 +1,141 @@
+<!-- <div>
+  <input type="text" (input)="onInputChange($event)" style="width: 1000px; height: 50px;">
+  <br><br>
+  <p>{{ inputText }}</p>
+   <p>ชื่อ: </p> 
+   <p>ที่อยู่: </p> 
+  <p>เบอร์: {{ parsedAddress?.phone }}</p>
+  <p>จังหวัด: {{ parsedAddress?.province }}</p>
+  <p>อำเภอ: {{ parsedAddress?.district }}</p>
+  <p>ตำบล: {{ parsedAddress?.subDistrict }}</p>
+  <p>เขต:  {{ parsedAddress?.districts }}</p>
+  <p>แขวง: {{ parsedAddress?.subDistricts }}</p>
+  <p>ถนน:</p>
+  <p>รหัสไปรษณีย์: {{ parsedAddress?.zipCode }}</p>
+</div> -->
+
+// import { Component, input } from '@angular/core';
+
+// @Component({
+//   selector: 'app-root',
+//   templateUrl: './app.component.html',
+//   styleUrl: './app.component.css'
+// })
+// export class AppComponent {
+//   title = 'my-app';
+//         inputText: string = '';
+//         parsedAddress: { name?: string, phone?: string, subDistrict?: string, district?: string, subDistricts?: string, districts?: string, province?: string, zipCode?: string } | null = null;
+
+//         onInputChange(event: Event): void {
+//           const inputElement = event.target as HTMLInputElement;
+//           const inputValue = inputElement.value;
+//           console.log(inputValue);
+//           this.inputText = inputValue;
+//           this.parsedAddress = this.parseAddress(inputValue);
+//         }
+
+//         parseAddress(address: string) {
+//           // แยกข้อมูลที่คั่นด้วยช่องว่าง
+//           const parts = address.split(/[\s,]+/);
+
+//           // const parts = address.split(/\s+/);
+//           let name = '';
+//           let phone = '';
+//           let subDistrict = '';
+//           let subDistricts = '';
+//           let district = '';
+//           let districts = '';
+//           let province = '';
+//           let zipCode = '';
+//           let isProvinceNext = false;
+//           let issubDistrictNext = false;
+//           let isDistrictNext = false;
+//           let issubDistrictsNext = false;
+//           let isDistrictsNext = false;
+
+//           // ตรวจสอบแต่ละส่วนและจัดหมวดหมู่
+//           parts.forEach(part => {
+//             const [prefix, value] = part.trim().split(' ', 2);
+//             const phoneRegex = /^0\d{9}$/;
+
+//             const cleanedPart = part.replace(/-/g, ''); // ลบขีดคั่นออก
+//             const cleantext = part.replace(/" "/g,'')
+
+//             if (/^\d{10}$/.test(cleanedPart)) {
+//               phone = cleanedPart;
+//             } 
+//             // if (/^\d{10}$/.test(part)) {
+//             //   phone = part;
+//             // }
+//             else if (/^\d{5}$/.test(part)) {
+//               zipCode = part;
+//             }
+
+//             if (isProvinceNext) {
+//               province = part;
+//               isProvinceNext = false;
+//             }
+//             if (issubDistrictNext) {
+//               subDistrict = part;
+//               issubDistrictNext = false;
+//             } 
+//             if (isDistrictNext) {
+//               district = part;
+//               isDistrictNext = false;
+//             }  
+//             if (issubDistrictsNext) {
+//               subDistricts = part;
+//               issubDistrictsNext = false;
+//             } 
+//             if (isDistrictsNext) {
+//               districts = part;
+//               isDistrictsNext = false;
+//             }  
+//             else if (part.startsWith('จ.')) {
+//               province = part.substring(2);
+//             }
+//             else if (part === 'จังหวัด') {
+//               isProvinceNext = true;
+//             }
+
+//             else if (part.startsWith('อ.')) {
+//               district = part.substring(2);
+//             }
+//             else if (part === 'อำเภอ') {
+//               isDistrictNext = true;
+//             }
+//             else if (part.startsWith('ข.')) {
+//               districts = part.substring(2);
+//             }
+//             else if (part === 'เขต') {
+//               isDistrictsNext = true;
+//             }
+//             else if (part.startsWith('ต.')) {
+//               subDistrict = part.substring(2);
+//             }
+//             else if (part === 'ตำบล') {
+//               issubDistrictNext = true;
+//             }
+//             else if (part === 'แขวง') {
+//               issubDistrictsNext = true;
+//             }
+//             // else {
+//             //    name += part + ' ';
+//             // }
+//           });
+
+
+//           return {
+//             name: name.trim(),
+//             phone: phone.trim(),
+//             subDistrict: subDistrict.trim(),
+//             district: district.trim(),
+//             subDistricts: subDistricts.trim(),
+//             districts: districts.trim(),
+//             province: province.trim(),
+//             zipCode: zipCode.trim(),
+//           };
+//         }
+
+// }
+

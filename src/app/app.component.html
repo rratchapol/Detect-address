@@ -1,15 +1,56 @@
-<div>
+<!-- <div>
   <input type="text" (input)="onInputChange($event)" style="width: 1000px; height: 50px;">
   <br><br>
   <p>{{ inputText }}</p>
-  <!-- <p>ชื่อ: {{ parsedAddress?.name }}</p> -->
-  <br>
+  <p>ชื่อ: {{ parsedAddress?.name }}</p>
+  <p>ที่อยู่: {{ parsedAddress?.address }}</p>
   <p>เบอร์: {{ parsedAddress?.phone }}</p>
   <p>จังหวัด: {{ parsedAddress?.province }}</p>
   <p>อำเภอ: {{ parsedAddress?.district }}</p>
   <p>ตำบล: {{ parsedAddress?.subDistrict }}</p>
-  <p>เขต:</p>
-  <p>แขวง:</p>
+  <p>เขต: {{ parsedAddress?.districts }}</p>
+  <p>แขวง: {{ parsedAddress?.subDistricts }}</p>
   <p>ถนน:</p>
   <p>รหัสไปรษณีย์: {{ parsedAddress?.zipCode }}</p>
+  
+</div> -->
+<input type="text" (input)="onInputChange($event)" class="input-field">
+
+<div *ngIf="parsedAddress" class="address-form">
+  <div class="form-group">
+    <p>ชื่อ: </p>
+    <input type="text" [(ngModel)]="parsedAddress.name" placeholder="ชื่อ" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>ที่อยู่:</p>
+    <input type="text" [(ngModel)]="parsedAddress.address" placeholder="ที่อยู่" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>เบอร์: </p>
+    <input type="text" [(ngModel)]="parsedAddress.phone" placeholder="เบอร์โทร" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>จังหวัด:</p>
+    <input type="text" [(ngModel)]="parsedAddress.province" placeholder="จังหวัด" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>อำเภอ: </p>
+    <input type="text" [(ngModel)]="parsedAddress.district" placeholder="อำเภอ" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>ตำบล: </p>
+    <input type="text" [(ngModel)]="parsedAddress.subDistrict" placeholder="ตำบล" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>เขต: </p>
+    <input type="text" [(ngModel)]="parsedAddress.districts" placeholder="เขต" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>แขวง: </p>
+    <input type="text" [(ngModel)]="parsedAddress.subDistricts" placeholder="แขวง" class="form-input">
+  </div>
+  <div class="form-group">
+    <p>รหัสไปรษณีย์: </p>
+    <input type="text" [(ngModel)]="parsedAddress.zipCode" placeholder="รหัสไปรษณีย์" class="form-input">
+  </div>
 </div>

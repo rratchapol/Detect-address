@@ -1,100 +1,105 @@
+
+
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   title = 'my-app';
-        inputText: string = '';
-        parsedAddress: { name?: string, phone?: string, subDistrict?: string, district?: string, province?: string, zipCode?: string } | null = null;
+  inputText: string = '';
+  parsedAddress: { name?: string, address?: string, phone?: string, subDistrict?: string, district?: string, subDistricts?: string, districts?: string, province?: string, zipCode?: string } | null = null;
 
-        onInputChange(event: Event): void {
-          const inputElement = event.target as HTMLInputElement;
-          const inputValue = inputElement.value;
-          console.log(inputValue);
-          this.inputText = inputValue;
-          this.parsedAddress = this.parseAddress(inputValue);
-        }
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputValue = inputElement.value;
+    console.log(inputValue);
+    this.inputText = inputValue;
+    this.parsedAddress = this.parseAddress(inputValue);
+  }
 
-        parseAddress(address: string) {
-          // แยกข้อมูลที่คั่นด้วยช่องว่าง
-          const parts = address.split(/[\s,]+/);
+  parseAddress(address: string) {
+    let name = '';
+    let phone = '';
+    let subDistrict = '';
+    let subDistricts = '';
+    let district = '';
+    let districts = '';
+    let province = '';
+    let zipCode = '';
+    let rawAddress = address;
+    const nameMatch = address.match(/^\d+\s+(.+?)\s*\(/);
+    const phoneMatch = address.match(/(?:โทร|เบอร์โทร|โทร.)?\s*(\d{3}[-]?\d{3}[-]?\d{4})/);
+    const postalCodeMatch = address.match(/\b\d{5}\b/);
+    // const provinceMatch = address.match(/จ\.(\S+)/);
+    const provinceMatch = address.match(/(?:จ\.|จังหวัด)\s*(\S+)/);
+    // const districtMatch = address.match(/อ\.(\S+)/);
+    const districtMatch = address.match(/(?:อ\.|อำเภอ)\s*(\S+)/);
 
-          // const parts = address.split(/\s+/);
-          let name = '';
-          let phone = '';
-          let subDistrict = '';
-          let district = '';
-          let province = '';
-          let zipCode = '';
-          let isProvinceNext = false;
-          let issubDistrictNext = false;
-          let isDistrictNext = false;
+    // const subDistrictMatch = address.match(/ต\.(\S+)/);
+    const subDistrictMatch = address.match(/(?:ต\.|ตำบล)\s*(\S+)/);
 
-          // ตรวจสอบแต่ละส่วนและจัดหมวดหมู่
-          parts.forEach(part => {
-            const [prefix, value] = part.trim().split(' ', 2);
-            const phoneRegex = /^0\d{9}$/;
-//8
+    const districtsMatch = address.match(/เขต(\S+)/);
+    const subDistrictsMatch = address.match(/แขวง(\S+)/);
+    const phoneDirectMatch = address.match(/\b\d{10}\b/);
 
-            if (/^\d{10}$/.test(part)) {
-              phone = part;
-            }
-            else if (/^\d{5}$/.test(part)) {
-              zipCode = part;
-            }
-  
-            if (isProvinceNext) {
-              province = part;
-              isProvinceNext = false;
-            }
-            if (issubDistrictNext) {
-              subDistrict = part;
-              issubDistrictNext = false;
-            } 
-            if (isDistrictNext) {
-              district = part;
-              isDistrictNext = false;
-            }  
-            else if (part.startsWith('จ.')) {
-              province = part.substring(2);
-            }
-            else if (part === 'จังหวัด') {
-              isProvinceNext = true;
-            }
+    if (nameMatch) {
+      name = nameMatch[1].trim();
+      rawAddress = rawAddress.replace(nameMatch[0], '');
+    }
+    if (phoneMatch) {
+      phone = phoneMatch[1].replace(/-/g, '').trim();
+      rawAddress = rawAddress.replace(phoneMatch[0], '');
+    }
+    if (!phone && phoneDirectMatch) {
+      phone = phoneDirectMatch[0].replace(/-/g, '').trim();
+      rawAddress = rawAddress.replace(phoneDirectMatch[0], '');
+    }
+    if (postalCodeMatch) {
+      zipCode = postalCodeMatch[0].trim();
+      rawAddress = rawAddress.replace(postalCodeMatch[0], '');
+    }
+    if (provinceMatch) {
+      province = provinceMatch[1].trim();
+      rawAddress = rawAddress.replace(provinceMatch[0], '');
+    }
+    if (districtMatch) {
+      district = districtMatch[1].trim();
+      rawAddress = rawAddress.replace(districtMatch[0], '');
+    }
+    if (subDistrictMatch) {
+      subDistrict = subDistrictMatch[1].trim();
+      rawAddress = rawAddress.replace(subDistrictMatch[0], '');
+    }
+    if (districtsMatch) {
+      districts = districtsMatch[1].trim();
+      rawAddress = rawAddress.replace(districtsMatch[0], '');
+    }
+    if (subDistrictsMatch) {
+      subDistricts = subDistrictsMatch[1].trim();
+      rawAddress = rawAddress.replace(subDistrictsMatch[0], '');
+    }
 
-            else if (part.startsWith('อ.')) {
-              district = part.substring(2);
-            }
-            else if (part === 'อำเภอ') {
-              isDistrictNext = true;
-            }
-            else if (part.startsWith('ต.')) {
-              subDistrict = part.substring(2);
-            }
-            else if (part === 'ตำบล') {
-              issubDistrictNext = true;
-            }
-            else {
-              name += part + ' ';
-            }
-          });
+    const cleanedAddress = rawAddress
+      .replace(/^\d+\s*/, '') // Remove leading numbers (record number)
+      .replace(/\s*\(.+?\)/, '') // Remove anything in parentheses
+      .replace(/aอ\)\s*/, '') // Remove "aอ)"
+      .replace(/ระหัส\s?ไปรษณี\s?/, '') // Remove "ระหัส ไปรษณี"
+      .trim();
 
-
-          return {
-            name: name.trim(),
-            phone: phone.trim(),
-            subDistrict: subDistrict.trim(),
-            district: district.trim(),
-            province: province.trim(),
-            zipCode: zipCode.trim(),
-          };
-        }
-
+    return {
+      name,
+      address: cleanedAddress,
+      phone,
+      subDistrict,
+      district,
+      subDistricts,
+      districts,
+      province,
+      zipCode,
+    };
+  }
 }
-
-
-
-
