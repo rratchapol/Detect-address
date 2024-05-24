@@ -1,21 +1,8 @@
-<!-- <div>
-  <input type="text" (input)="onInputChange($event)" style="width: 1000px; height: 50px;">
-  <br><br>
-  <p>{{ inputText }}</p>
-  <p>ชื่อ: {{ parsedAddress?.name }}</p>
-  <p>ที่อยู่: {{ parsedAddress?.address }}</p>
-  <p>เบอร์: {{ parsedAddress?.phone }}</p>
-  <p>จังหวัด: {{ parsedAddress?.province }}</p>
-  <p>อำเภอ: {{ parsedAddress?.district }}</p>
-  <p>ตำบล: {{ parsedAddress?.subDistrict }}</p>
-  <p>เขต: {{ parsedAddress?.districts }}</p>
-  <p>แขวง: {{ parsedAddress?.subDistricts }}</p>
-  <p>ถนน:</p>
-  <p>รหัสไปรษณีย์: {{ parsedAddress?.zipCode }}</p>
-  
-</div> -->
-<input type="text" (input)="onInputChange($event)" class="input-field">
 
+<!-- ส่วน input ข้อความ กรอกข้อมูลเองได้ถ้าไม่ครบ ไม่ตรงหรือผิด -->
+<input type="text" (input)="onInputChange($event)" class="input-field"> 
+
+<!-- ส่วนแสดงข้อความ form กรอกข้อมูลเองได้ถ้าไม่ตรงหรือผิด -->
 <div *ngIf="parsedAddress" class="address-form">
   <div class="form-group">
     <p>ชื่อ: </p>
@@ -42,15 +29,27 @@
     <input type="text" [(ngModel)]="parsedAddress.subDistrict" placeholder="ตำบล" class="form-input">
   </div>
   <div class="form-group">
-    <p>เขต: </p>
-    <input type="text" [(ngModel)]="parsedAddress.districts" placeholder="เขต" class="form-input">
-  </div>
-  <div class="form-group">
-    <p>แขวง: </p>
-    <input type="text" [(ngModel)]="parsedAddress.subDistricts" placeholder="แขวง" class="form-input">
-  </div>
-  <div class="form-group">
     <p>รหัสไปรษณีย์: </p>
     <input type="text" [(ngModel)]="parsedAddress.zipCode" placeholder="รหัสไปรษณีย์" class="form-input">
   </div>
+</div>
+
+<br><br><br><br><br>
+
+<!-- คำอธิบาย -->
+<div style="
+    background-color: rgb(92, 215, 141);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 15px 0px rgba(0,0,0,0.75);
+    width: 40%; 
+    margin-right: auto; 
+">
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คชื่อ จากตัวเลข id ข้างหน้า</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คจังหวัด จาก จ. จังหวัด</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คอำเภอ จาก อ. อำเภอ เขต</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คตำบล จาก ต. ตำบล แขวง</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็ครหัสไปรษณีย์ จาก เลข 5 ตัว</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คเบอร์ จาก เลข 10 ตัว</p>
+  <p style="color: rgb(0, 0, 0); font-weight: bold;">เช็คที่อยู่ จาก เอาที่เหลือใส่ cleanedAddress ลบส่วนที่ไม่ต้องการ set ค่า</p>
 </div>

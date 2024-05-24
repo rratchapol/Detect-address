@@ -25,46 +25,39 @@ export class AppComponent {
     let name = '';
     let phone = '';
     let subDistrict = '';
-    let subDistricts = '';
     let district = '';
-    let districts = '';
     let province = '';
     let zipCode = '';
     let rawAddress = address;
-    const nameMatch = address.match(/^\d+\s+(.+?)\s*\(/);
-    const phoneMatch = address.match(/(?:โทร|เบอร์โทร|โทร.)?\s*(\d{3}[-]?\d{3}[-]?\d{4})/);
-    const postalCodeMatch = address.match(/\b\d{5}\b/);
-    // const provinceMatch = address.match(/จ\.(\S+)/);
-    const provinceMatch = address.match(/(?:จ\.|จังหวัด)\s*(\S+)/);
-    // const districtMatch = address.match(/อ\.(\S+)/);
-    const districtMatch = address.match(/(?:อ\.|อำเภอ)\s*(\S+)/);
-
-    // const subDistrictMatch = address.match(/ต\.(\S+)/);
-    const subDistrictMatch = address.match(/(?:ต\.|ตำบล)\s*(\S+)/);
-
-    const districtsMatch = address.match(/เขต(\S+)/);
-    const subDistrictsMatch = address.match(/แขวง(\S+)/);
-    const phoneDirectMatch = address.match(/\b\d{10}\b/);
+    const nameMatch = address.match(/^\d+\s+(.+?)\s*\(/);                                     //ค้นหาตัวเลขที่อยู่ด้านหน้า และจากนั้นค้นหาข้อความที่อยู่ระหว่างวงเล็บ เช่น  31 P'Boss (
+    const phoneMatch = address.match(/(?:โทร|เบอร์โทร|โทร.)?\s*(\d{3}[-]?\d{3}[-]?\d{4})/);    //ค้นหาหมายเลขโทรศัพท์
+    const postalCodeMatch = address.match(/\b\d{5}\b/);                                      //ค้นหารหัสไปรษณีย์
+    const provinceMatch = address.match(/(?:จ\.|จังหวัด)\s*(\S+)/);                           //ค้นหาจังหวัด
+    const districtMatch = address.match(/(?:อ\.|อำเภอ)\s*(\S+)/);                          //ค้นหาอำเภอ
+    const subDistrictMatch = address.match(/(?:ต\.|ตำบล)\s*(\S+)/);                       //ค้นหาตำบล
+    const districtsMatch = address.match(/(?:เขต\.|เขต)\s*(\S+)/);                        //ค้นหาเขต
+    const subDistrictsMatch = address.match(/(?:แขวง\.|แขวง)\s*(\S+)/);                  //ค้นหาแขวง
+    const phoneDirectMatch = address.match(/\b\d{10}\b/);                               //ค้นหาหมายเลขโทรศัพท์โดยตรง
 
     if (nameMatch) {
-      name = nameMatch[1].trim();
+      name = nameMatch[1].trim(); //ลบช่องว่างด้านหน้าและด้านหลังข้อความ
       rawAddress = rawAddress.replace(nameMatch[0], '');
     }
     if (phoneMatch) {
-      phone = phoneMatch[1].replace(/-/g, '').trim();
+      phone = phoneMatch[1].replace(/-/g, '').trim();  //ลบเครื่องหมายขีดกลาง (-) ทั้งหมดออก
       rawAddress = rawAddress.replace(phoneMatch[0], '');
     }
     if (!phone && phoneDirectMatch) {
-      phone = phoneDirectMatch[0].replace(/-/g, '').trim();
+      phone = phoneDirectMatch[0].replace(/-/g, '').trim();   //ลบเครื่องหมายขีดกลาง (-) ทั้งหมดออก
       rawAddress = rawAddress.replace(phoneDirectMatch[0], '');
     }
     if (postalCodeMatch) {
-      zipCode = postalCodeMatch[0].trim();
+      zipCode = postalCodeMatch[0].trim();    //ลบช่องว่างด้านหน้าและด้านหลังข้อความ
       rawAddress = rawAddress.replace(postalCodeMatch[0], '');
     }
     if (provinceMatch) {
-      province = provinceMatch[1].trim();
-      rawAddress = rawAddress.replace(provinceMatch[0], '');
+      province = provinceMatch[1].trim();    //ลบช่องว่างด้านหน้าและด้านหลังข้อความ
+      rawAddress = rawAddress.replace(provinceMatch[0], '');  
     }
     if (districtMatch) {
       district = districtMatch[1].trim();
@@ -75,19 +68,21 @@ export class AppComponent {
       rawAddress = rawAddress.replace(subDistrictMatch[0], '');
     }
     if (districtsMatch) {
-      districts = districtsMatch[1].trim();
+      district = districtsMatch[1].trim();  
       rawAddress = rawAddress.replace(districtsMatch[0], '');
     }
     if (subDistrictsMatch) {
-      subDistricts = subDistrictsMatch[1].trim();
+      subDistrict = subDistrictsMatch[1].trim();
       rawAddress = rawAddress.replace(subDistrictsMatch[0], '');
     }
 
     const cleanedAddress = rawAddress
-      .replace(/^\d+\s*/, '') // Remove leading numbers (record number)
-      .replace(/\s*\(.+?\)/, '') // Remove anything in parentheses
-      .replace(/aอ\)\s*/, '') // Remove "aอ)"
-      .replace(/ระหัส\s?ไปรษณี\s?/, '') // Remove "ระหัส ไปรษณี"
+      .replace(/^\d+\s*/, '')               // ลบตัวเลขที่อยู่ด้านหน้า ID
+      .replace(/ระหัส\s?ไปรษณี/, '')        // Remove "ระหัส ไปรษณี"
+      .replace(/เลขไปรษณีย์\s?/, '')       // Remove "เลขไปรษณีย์"
+      .replace(/\([^)]*\)/g, '')         // ลบข้อมูลที่อยู่ภายในวงเล็บทั้งหมด
+      .replace(/\s*\([^)]*\)/, '')      // ลบข้อมูลที่อยู่ภายในวงเล็บทั้งหมดและช่องว่างด้านหน้า
+      .replace(/[^\s]+\)\s*/g, '')     //ลบข้อความที่มีตัวอักษรตามด้วย ")" พร้อมกับช่องว่าง (ถ้ามี) ทั้งหมด
       .trim();
 
     return {
@@ -96,8 +91,6 @@ export class AppComponent {
       phone,
       subDistrict,
       district,
-      subDistricts,
-      districts,
       province,
       zipCode,
     };
